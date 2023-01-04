@@ -1,49 +1,103 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>JS ASSESSMENT</title> 
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS ASSESSMENT</title>
+  </head>
 
-<body>
+  <body>
+    <div>
+      <!-- <! put your HTML code to input data here > -->
+      <form id="myForm" action="">
+        <label for="uid">User Id:</label>
+        <input type="name" id="uid" name="uid" /><br />
+        <label for="fname"> First Name:</label>
+        <input type="text" id="fname" name="fname" /><br />
+        <label for="lname">Last name:</label>
+        <input type="text" id="lname" name="lname" /><br />
+        <label for="birthday"> Birthday:</label>
+        <input type="date" id="birthday" name="birthday" /><br />
+        <input type="submit" id="accept" value="Accept" />
+        <div id="validate"></div>
+        <div id="daysDiff"></div>
+      </form>
+    </div>
 
-<div>
-    <!-- <! put your HTML code to input data here > -->
-    UserID: <input type="text" id="uid"><br>
-    First Name: <input type="text" id="fname"><br>
-    Last Name: <input type="text" id="lname"><br>
-    Birthday: <input type="date" id="birthday"><br>
-    <!-- <button type="button" 
-            onclick='document.getElementById("").innerHTML = '>ACCEPT</button> -->
+    <script>
+      function readInput() {
+        var uid = document.getElementById("uid").value;
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var birthday = document.getElementById("birthday").value;
+        console.log(uid, fname, lname, birthday);
+      }
 
-</div>
+      // and validate inputs here using if statements
+      const validateUserId = (userId) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,12}$/.test(userId);
 
-<script>
-    // put your JavaScript code to read HTML inputs
-    function readInput() {
-        var uid= document.getElementById("uid").value;
-        console.log(uid)
-    }
+      const form = document.getElementById("myForm");
 
-    readInput(uid);
+      form.onsubmit = (e) => {
+        // put your JavaScript code to read HTML inputs
+        var uid = document.getElementById("uid").value;
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var birthday = document.getElementById("birthday").value;
+        var current = new Date().toLocaleDateString();
+        var diff = dateDiff(birthday, current, "days");
 
+        console.log(uid, fname, lname, birthday);
+        // stop page from reload
+        e.preventDefault();
 
-    // and validate inputs here using if statements
+        // and document.getElementById().innerHTML to display results
+        if (validateUserId(e.target.elements.uid.value)) {
+          document.getElementById("validate").innerHTML = "Valid User ID";
+        } else {
+          document.getElementById("validate").innerHTML =
+            "User ID needs to be 8-12 characters long, include a number, lowercase and upper case letters";
+        }
 
-    // and document.getElementById().innerHTML to display results
-            // <button type="button" 
-            // onclick='document.getElementById("").innerHTML = '>ACCEPT</button>
-    // write your JS functions here
+        document.getElementById("daysDiff").innerHTML = `${fname} ${lname} you have been breathing for ${diff} days!`;
 
-    // write your JS Loop For here to print the Xs
+      };
 
-    // use something like document.write(str.padStart(i,"x") + "<br>");
-    // document.write(str.padStart(i,"x") + "<br>");
+      // write your JS functions here
+      function dateDiff(birthday, current, interval) {
+        var second = 1000,
+          minute = second * 60,
+          hour = minute * 60,
+          day = hour * 24,
+          week = day * 7;
+        birthday = new Date(birthday);
+        current = new Date(current);
+        var timediff = current - birthday;
+        if (isNaN(timediff)) return NaN;
+        switch (interval) {
+          case "years":
+            return current.getFullYear() - birthday.getFullYear();
+          case "months":
+            return (
+              (current.getFullYear() * 12 + current.getMonth())
+              -
+              (birthday.getFullYear() * 12 + birthday.getMonth())
+            );
+          case "weeks": return Math.floor(timediff / week);
+          case "days": return Math.floor(timediff / day);
+          case "hours": return Math.floor(timediff / hour);
+          case "minutes": return Math.floor(timediff / minute);
+          case "seconds": return Math.floor(timediff / second);
+          default: return undefined;
+        }
+      }
+      // write your JS Loop For here to print the Xs
 
-</script>
+      // use something like document.write(str.padStart(i,"x") + "<br>");
 
-</body>
+      // document.write(str.padStart(i,"x") + "<br>");
+    </script>
+  </body>
 </html>
- 
